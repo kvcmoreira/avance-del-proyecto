@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Buscar Producto{% endblock %}
+{% block content %}
+<h2>🔍 Buscar Producto</h2>
+<form method="POST" class="mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese parte del nombre..." required>
+        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+{% if resultados %}
+    <h4>Resultados:</h4>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in resultados %}
+                <tr>
+                    <td>{{ p.get_id() }}</td>
+                    <td>{{ p.get_nombre() }}</td>
+                    <td>{{ p.get_cantidad() }}</td>
+                    <td>${{ "%.2f"|format(p.get_precio()) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% elif request.method == 'POST' %}
+    <div class="alert alert-warning">No se encontraron productos con ese nombre.</div>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary">⬅️ Volver</a>
+{% endblock %}
